@@ -1,6 +1,7 @@
 {
   "name": "card-matching-game",
   "version": "0.1.0",
+  "author": "Erka Pi <epi@my.harrisburgu.edu>",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
