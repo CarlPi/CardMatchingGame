@@ -1,1 +1,4 @@
-<p>card works!</p>
+<div class="card-front" *ngIf="cardFlipped" (click)="flipCard()">
+  <img src="{{cardDetails.icon}}"/>
+</div>
+<div class="card-back" *ngIf="!cardFlipped" (click)="flipCard()" [@enterAnimation]></div>

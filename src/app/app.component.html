@@ -1,1 +1,8 @@
-<p>hello!</p>
+<section class="game-section">
+  <h1 class="game-title">Card Matching Game</h1>
+  <section class="game-container">
+    <ng-container *ngFor="let card of cardList">
+      <app-card [cardDetails]="card"></app-card>
+    </ng-container>
+  </section>
+</section>
