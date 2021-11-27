@@ -22,7 +22,9 @@ export class CardComponent {
   cardFlipped = false;
 
   flipCard() {
-    this.cardFlipped = !this.cardFlipped;
+    if (!this.cardFlipped) {
+      this.cardFlipped = true;
+    }
   }
 
 }

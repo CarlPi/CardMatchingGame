@@ -1,18 +1,24 @@
-.card-front {
+.card {
   height: 150px;
   width: 125px;
+  border-radius: 12px;
+  border-width: 1px;
+  border-radius: 12px;
+  border-width: 1px;
+
+}
+
+.card-front {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 12px;
-  border-width: 1px;
   border-style: solid;
 }
 
 .card-back {
   background-color: black;
-  height: 150px;
-  width: 125px;
-  border-radius: 12px;
-  border-width: 1px;
+}
+
+.card-matched {
+  background-color: chartreuse;
 }
