@@ -11,4 +11,9 @@ import { CardList } from './common/card-list';
 export class AppComponent {
   title = 'CardMatchingGame';
   cardList = CardList;
+  gameStarted = false;
+
+  startGame() {
+    this.gameStarted = true;
+  }
 }
