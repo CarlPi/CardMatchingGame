@@ -1,4 +1,4 @@
-<div class="card card-front" *ngIf="cardFlipped" (click)="flipCard()">
+<div class="card card-front" *ngIf="cardFlipped" (click)="flipCard()" [ngClass]="{'card-matched': cardDetails.matched}">
   <img src="{{cardDetails.icon}}"/>
 </div>
 <div class="card card-back" *ngIf="!cardFlipped" (click)="flipCard()" [@enterAnimation]></div>

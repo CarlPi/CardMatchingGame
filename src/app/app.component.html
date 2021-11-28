@@ -1,9 +1,7 @@
 <section class="game-section">
   <h1 class="game-title">Card Matching Game</h1>
   <section class="game-container">
-    <ng-container *ngFor="let card of cardList">
-      <app-card [cardDetails]="card"></app-card>
-    </ng-container>
+    <app-card *ngFor="let card of cardList" [cardDetails]="card" (cardSelected)="onCardSelect($event)"></app-card>
   </section>
 </section>
 <div class="overlay-text" *ngIf="!gameStarted" (click)="startGame()">

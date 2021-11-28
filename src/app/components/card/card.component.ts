@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
@@ -16,15 +16,31 @@ import { trigger, style, animate, transition } from '@angular/animations';
     )
   ]
 })
-export class CardComponent {
+
+export class CardComponent implements OnChanges {
   @Input() cardDetails: any;
 
-  cardFlipped = false;
+  @Output() cardSelected = new EventEmitter<any>();
+
+  cardFlipped: boolean = false;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.cardDetails && changes.cardDetails.currentValue) {
+      this.cardDetails = changes.cardDetails.currentValue;
+      this.cardFlipped = this.cardDetails.flipped;
+    }
+  }
 
   flipCard() {
     if (!this.cardFlipped) {
       this.cardFlipped = true;
+      this.cardSelected.emit(this.cardDetails);
     }
   }
 
+  flipCardBack() {
+    if (this.cardFlipped && !this.cardDetails.matched) {
+      this.cardFlipped = false;
+    }
+  }
 }
