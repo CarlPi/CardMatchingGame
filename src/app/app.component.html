@@ -5,5 +5,10 @@
   </section>
 </section>
 <div class="overlay-text" *ngIf="!gameStarted" (click)="startGame()">
-  Click to Start
+  <div *ngIf="!gameEndedOnce">Click to Start</div>
+  <div *ngIf="gameEndedOnce">
+    <div>All Cards Are Matched!</div>
+    <br/>
+    <div>Click to Restart</div>
+  </div>
 </div>
