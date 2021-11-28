@@ -25,4 +25,26 @@ describe('CardComponent', () => {
     expect(component).toBeTruthy();
     expect(component.cardFlipped).toBeFalsy();
   });
+
+  it('should flipCard change the status of card and emit selected card', () => {
+    component.cardFlipped = false;
+    spyOn(component.cardSelected, 'emit');
+    component.flipCard();
+    expect(component.cardFlipped).toBeTruthy();
+    expect(component.cardSelected.emit).toHaveBeenCalledWith(component.cardDetails);
+  });
+
+  it('should flipCardBack flip back the card', () => {
+    component.cardDetails = {
+      id: 2,
+      name: "Amazon",
+      icon: "https://img.icons8.com/color/96/000000/amazon.png",
+      flipped: true,
+      matched: false
+    };
+    component.cardFlipped = true;
+    component.flipCardBack();
+    expect(component.cardFlipped).toBeFalsy();
+  });
+
 });
