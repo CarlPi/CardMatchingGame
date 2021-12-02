@@ -18,6 +18,11 @@ export class AppComponent implements OnInit {
   firstCard: any;
   secondCard: any;
   gameEndedOnce = false;
+  countOfFlips = 0;
+  timeConsumed: number = 0;
+  timerRef: any;
+  minute: number = 0;
+  second: number = 0;
 
   ngOnInit(): void {
     this.shuffleCards();
@@ -40,9 +45,15 @@ export class AppComponent implements OnInit {
       this.shuffleCards();
     }
     this.gameStarted = true;
+    this.countOfFlips = 0;
+    this.timeConsumed = 0;
+    this.minute = 0;
+    this.second = 0;
+    this.startTimer();
   }
 
   onCardSelect(selectedCard: any) {
+    this.countOfFlips ++;
     this.cardList.forEach(card => {
       if (card.id === selectedCard.id) {
         card.flipped = true;
@@ -91,6 +102,23 @@ export class AppComponent implements OnInit {
     if (!unmatchedCard) {
       this.gameStarted = false;
       this.gameEndedOnce = true;
+      this.stopTimer();
     }
+  }
+
+  startTimer() {
+    this.timerRef = setInterval(() => {
+      this.timeConsumed ++;
+      if (this.timeConsumed >= 60) {
+        this.minute = Math.floor(this.timeConsumed / 60);
+        this.second = (this.timeConsumed % 60);
+      } else {
+        this.second = this.timeConsumed;
+      }
+    }, 1000)
+  }
+
+  stopTimer() {
+    clearInterval(this.timerRef);
   }
 }

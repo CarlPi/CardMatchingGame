@@ -9,14 +9,21 @@
     font-weight: normal;
     text-align: center;
     font-size: 2em;
+    margin-bottom: 0;
 }
 
 .game-container {
     display: grid;
     grid-template-columns: repeat(4, auto);
     grid-gap: 10px;
-    margin: 50px;
+    margin: 20px;
     justify-content: center;
+}
+
+.game-info-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 .overlay-text {

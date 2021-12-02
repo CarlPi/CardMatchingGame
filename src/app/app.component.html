@@ -1,5 +1,9 @@
 <section class="game-section">
   <h1 class="game-title">Card Matching Game</h1>
+  <div class="game-info-container">
+    <h2>Count: {{ countOfFlips }}</h2>
+    <h2>Time: {{ minute }}:{{ second }}</h2>
+  </div>
   <section class="game-container">
     <app-card *ngFor="let card of cardList" [cardDetails]="card" (cardSelected)="onCardSelect($event)"></app-card>
   </section>
@@ -8,6 +12,9 @@
   <div *ngIf="!gameEndedOnce">Click to Start</div>
   <div *ngIf="gameEndedOnce">
     <div>All Cards Are Matched!</div>
+    <br/>
+    <div>Total Counts: {{ countOfFlips }}</div>
+    <div>Time Consumed: {{ minute }}:{{ second }}</div>
     <br/>
     <div>Click to Restart</div>
   </div>

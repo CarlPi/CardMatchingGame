@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -37,6 +37,10 @@ describe('AppComponent', () => {
     expect(component.title).toEqual('CardMatchingGame');
     expect(component.gameStarted).toBeFalsy();
     expect(component.gameEndedOnce).toBeFalsy();
+    expect(component.countOfFlips).toEqual(0);
+    expect(component.timeConsumed).toEqual(0);
+    expect(component.minute).toEqual(0);
+    expect(component.second).toEqual(0);
   });
 
   it('should shuffleCards shuffle card list', () => {
@@ -44,12 +48,18 @@ describe('AppComponent', () => {
     expect(component.cardList).not.toEqual(CardList);
   });
 
-  it('should startGame start game and shuffle cards if it is a restart', () => {
+  it('should startGame start game, start timer, reset variables and shuffle cards if it is a restart', () => {
     spyOn(component, 'shuffleCards');
+    spyOn(component, 'startTimer');
     component.gameEndedOnce = true;
     component.startGame();
     expect(component.shuffleCards).toHaveBeenCalled();
     expect(component.gameStarted).toBeTruthy();
+    expect(component.startTimer).toHaveBeenCalled();
+    expect(component.countOfFlips).toEqual(0);
+    expect(component.timeConsumed).toEqual(0);
+    expect(component.minute).toEqual(0);
+    expect(component.second).toEqual(0);
   });
 
   it('should onCardSelect change card status to flipped and assign first or second card', () => {
@@ -60,8 +70,10 @@ describe('AppComponent', () => {
       flipped: false,
       matched: false
     };
+    component.countOfFlips = 0;
     component.onCardSelect(testCard);
     const cardResult = component.cardList.find(card => card.id === 4);
+    expect(component.countOfFlips).toEqual(1);
     expect(cardResult.flipped).toBeTruthy();
     expect(component.firstCard).toBe(testCard);
     spyOn(component, 'checkCards');
@@ -145,16 +157,18 @@ describe('AppComponent', () => {
     expect(cardResult2.matched).toBeTruthy();
   });
 
-  it('should checkGameStatus end the game if all cards are matched', () => {
+  it('should checkGameStatus end the game and stop timer if all cards are matched', () => {
     const testCardList = CardList.map(card => {
       card.flipped = true;
       card.matched = true;
       return card;
     });
+    spyOn(component, 'stopTimer');
     component.cardList = testCardList;
     component.checkGameStatus();
     expect(component.gameStarted).toBeFalsy();
     expect(component.gameEndedOnce).toBeTruthy();
+    expect(component.stopTimer).toHaveBeenCalled();
   });
 
   it('should flipCardsBack call flipCardBack method in child components', fakeAsync(() => {
@@ -162,6 +176,29 @@ describe('AppComponent', () => {
     component.flipCardsBack();
     tick(500);
     expect(component.cardComponents.toArray()[0].flipCardBack).toHaveBeenCalled();
+  }));
+
+  it('should stopTimer stop the timer', () => {
+    spyOn(window, 'clearInterval');
+    component.stopTimer();
+    expect(window.clearInterval).toHaveBeenCalled();
+  });
+
+  it('should startTimer log the time consumed which is less than a minute', fakeAsync(() => {
+    component.startTimer();
+    tick(3000);
+    expect(component.timeConsumed).toEqual(3);
+    expect(component.minute).toEqual(0);
+    expect(component.second).toEqual(3);
+    discardPeriodicTasks();
+  }));
+
+  it('should startTimer log the time consumed which is longer than a minute', fakeAsync(() => {
+    component.startTimer();
+    tick(61000);
+    expect(component.minute).toEqual(1);
+    expect(component.second).toEqual(1);
+    discardPeriodicTasks();
   }));
 
 });
